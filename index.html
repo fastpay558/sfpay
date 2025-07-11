@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>接口文档</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    nav {
+      width: 240px;
+      min-width: 180px;
+      background: #fff;
+      border-right: 1px solid #eee;
+      padding: 40px 10px 10px 30px;
+    }
+
+    nav h3 {
+      margin-top: 0;
+      font-size: 20px;
+      color: #E2231A;
+      letter-spacing: 2px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav ul li {
+      margin-bottom: 10px;
+    }
+
+    nav ul .sub-menu {
+      padding-left: 18px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+
+    nav ul .sub-menu li {
+      margin-bottom: 8px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #E2231A;
+      font-size: 16px;
+      transition: color 0.2s;
+    }
+
+    nav ul li a:hover {
+      color: #b71c1c;
+      text-decoration: underline;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 40px 40px 40px 60px;
+      background: #f9f9f9;
+    }
+
+    h1 {
+      color: #E2231A;
+      border-bottom: 2px solid #E2231A;
+      padding-bottom: 5px;
+      margin-top: 0;
+    }
+
+    h2 {
+      margin-top: 30px;
+      color: #444;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f3f3f3;
+    }
+
+    code {
+      background: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #d63384;
+    }
+
+    .code-block {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+      margin-top: 10px;
+    }
+
+    ul {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- 左侧导航 -->
+    <nav>
+      <h3>接口文档导航</h3>
+      <ul>
+        <li>
+          <a href="#guide" style="font-weight:bold;">接入说明</a>
+        </li>
+        <li>
+          <span style="font-weight:bold;">代收</span>
+          <ul class="sub-menu">
+            <li><a href="#pay-api">发起支付</a></li>
+            <li><a href="#order-query-api">查询订单</a></li>
+          </ul>
+        </li>
+        <!-- <li>
+          <span style="font-weight:bold;">代付</span>
+          <ul class="sub-menu">
+            <li><a href="#payout-api">请求付款接口文档</a></li>
+          </ul>
+        </li> -->
+      </ul>
+    </nav>
+    <!-- 右侧内容 -->
+    <div class="main-content">
+      <h1 id="guide">接入说明</h1>
+      <ul>
+        <li>请先联系平台获取商户号、密钥等信息。</li>
+        <li>所有接口均需签名校验，详见各接口参数说明。</li>
+        <li>接口请求和响应均为 <code>application/json</code> 格式。</li>
+        <li>如有疑问请联系技术支持。</li>
+      </ul>
+      <h2 id="order-status">🧾 订单状态说明</h2>
+      <ul>
+        <strong>
+          <li>0 = 待支付</li>
+          <li>1 = 支付成功</li>
+          <li>2 = 补单成功</li>
+          <li>3 = 支付失败</li>
+          <li>4 = 交易超时</li>
+          <li>5 = 冲正交易</li>
+        </strong>
+      </ul>
+      <br>
+      <!-- 发起支付 -->
+      <h1 id="pay-api">发起支付</h1>
+      <h2>📌 接口说明</h2>
+      <ul>
+        <li><strong>接口名称：</strong> 发起支付请求</li>
+        <li><strong>请求方式：</strong> POST</li>
+        <li><strong>接口地址：</strong> <code>/api/pay</code></li>
+        <li><strong>请求类型：</strong> application/json</li>
+      </ul>
+      <h2>📥 请求参数</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>是否必填</th>
+            <th>描述</th>
+            <th>示例值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>mchid</td>
+            <td>String</td>
+            <td>是</td>
+            <td>商户号</td>
+            <td>1234567890</td>
+          </tr>
+          <tr>
+            <td>timeStamp</td>
+            <td>String</td>
+            <td>是</td>
+            <td>请求时间</td>
+            <td>1720512000</td>
+          </tr>
+          <tr>
+            <td>sign</td>
+            <td>String</td>
+            <td>是</td>
+            <td>签名</td>
+            <td>abcdef1234567890</td>
+          </tr>
+          <tr>
+            <td>channelNo</td>
+            <td>String</td>
+            <td>是</td>
+            <td>通道编码</td>
+            <td>1001</td>
+          </tr>
+          <tr>
+            <td>mchTradeNo</td>
+            <td>String</td>
+            <td>是</td>
+            <td>商户订单号</td>
+            <td>TRADE202507070001</td>
+          </tr>
+          <tr>
+            <td>amount</td>
+            <td>String</td>
+            <td>是</td>
+            <td>交易金额（元）</td>
+            <td>100.00</td>
+          </tr>
+          <tr>
+            <td>notifyUrl</td>
+            <td>String</td>
+            <td>是</td>
+            <td>回调地址</td>
+            <td>https://your.site/callback</td>
+          </tr>
+          <tr>
+            <td>userName</td>
+            <td>String</td>
+            <td>否</td>
+            <td>用户姓名</td>
+            <td>张三</td>
+          </tr>
+          <tr>
+            <td>remark</td>
+            <td>String</td>
+            <td>否</td>
+            <td>订单备注</td>
+            <td>购买会员</td>
+          </tr>
+          <tr>
+            <td>notifyData</td>
+            <td>String</td>
+            <td>否</td>
+            <td>回调时原样返回的数据</td>
+            <td>ext-data-abc</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>🧾 请求示例</h2>
+      <div class="code-block">
+        <pre>{
+  "mchid": "1234567890",
+  "timeStamp": "20250709231003",
+  "sign": "abcdef1234567890",
+  "channelNo": "ALIPAY_NATIVE",
+  "mchTradeNo": "TRADE202507070001",
+  "amount": "100.00",
+  "notifyUrl": "https://your.domain.com/notify",
+  "userName": "张三",
+  "remark": "购买年费会员",
+  "notifyData": "attach-info-123456"
+}</pre>
+      </div>
+      <h2>📤 响应示例</h2>
+      <div class="code-block">
+        <pre>{
+  "data": {
+    "mchid": "CS0001",
+    "mchTradeNo": "1234",
+    "outTradeNo": "FT07092310131942964516392407040",
+    "channelNo": "1001",
+    "amount": "300.00",
+    "status": 0,
+    "statusMsg": "待支付",
+    "payUrl": "http://localhost:8080/service/page/pay?uid=69eac82a32c7a0a99ac2f46585e1a605&out_trade_no=FT07092310131942964516392407040",
+    "createTime": "20250709231013",
+    "sign": "4174ff8a12fdd8416779450abbff8402"
+  },
+  "msg": "下单成功",
+  "code": 200,
+  "time": "20250709231014"
+}</pre>
+      </div>
+
+      <h2>📑 返回参数说明</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>描述</th>
+            <th>示例值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>code</td>
+            <td>Int</td>
+            <td>返回码，200为成功</td>
+            <td>200</td>
+          </tr>
+          <tr>
+            <td>msg</td>
+            <td>String</td>
+            <td>返回信息</td>
+            <td>下单成功</td>
+          </tr>
+          <tr>
+            <td>time</td>
+            <td>String</td>
+            <td>响应时间</td>
+            <td>20250709231014</td>
+          </tr>
+          <tr>
+            <td>data.mchid</td>
+            <td>String</td>
+            <td>商户号</td>
+            <td>CS0001</td>
+          </tr>
+          <tr>
+            <td>data.mchTradeNo</td>
+            <td>String</td>
+            <td>商户订单号</td>
+            <td>1234</td>
+          </tr>
+          <tr>
+            <td>data.outTradeNo</td>
+            <td>String</td>
+            <td>平台订单号</td>
+            <td>FT07092310131942964516392407040</td>
+          </tr>
+          <tr>
+            <td>data.channelNo</td>
+            <td>String</td>
+            <td>通道编码</td>
+            <td>1001</td>
+          </tr>
+          <tr>
+            <td>data.amount</td>
+            <td>String</td>
+            <td>订单金额</td>
+            <td>300.00</td>
+          </tr>
+          <tr>
+            <td>data.status</td>
+            <td>Int</td>
+            <td><a href="#order-status">订单状态（点击跳转）</a></td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>data.statusMsg</td>
+            <td>String</td>
+            <td>订单状态描述</td>
+            <td>待支付</td>
+          </tr>
+          <tr>
+            <td>data.payUrl</td>
+            <td>String</td>
+            <td>支付跳转链接</td>
+            <td>http://localhost:8080/service/page/pay?... </td>
+          </tr>
+          <tr>
+            <td>data.createTime</td>
+            <td>String</td>
+            <td>订单创建时间</td>
+            <td>20250709231013</td>
+          </tr>
+          <tr>
+            <td>data.sign</td>
+            <td>String</td>
+            <td>签名</td>
+            <td>4174ff8a12fdd8416779450abbff8402</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>🔒 字段校验说明</h2>
+      <ul>
+        <li>所有字段为必填，请不要缺省。</li>
+        <li>amount 建议为保留两位小数的字符串，单位元。</li>
+        <li>notifyUrl 必须是可公网访问的 HTTP 地址。</li>
+        <li>notifyData 可携带附加业务信息，原样回传。</li>
+      </ul>
+
+      <!-- 查询订单 -->
+      <hr>
+      <h1 id="order-query-api">查询订单</h1>
+      <h2>📌 接口说明</h2>
+      <ul>
+        <li><strong>接口名称：</strong> 订单查询</li>
+        <li><strong>请求方式：</strong> POST</li>
+        <li><strong>接口地址：</strong> <code>/api/order/query</code></li>
+        <li><strong>请求类型：</strong> application/json</li>
+      </ul>
+      <h2>📥 请求参数</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>是否必填</th>
+            <th>描述</th>
+            <th>示例值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>mchid</td>
+            <td>String</td>
+            <td>是</td>
+            <td>商户号</td>
+            <td>1234567890</td>
+          </tr>
+          <tr>
+            <td>sign</td>
+            <td>String</td>
+            <td>是</td>
+            <td>签名</td>
+            <td>abcdef1234567890</td>
+          </tr>
+          <tr>
+            <td>mchTradeNo</td>
+            <td>String</td>
+            <td>否</td>
+            <td>商户订单号</td>
+            <td>TRADE202507070001</td>
+          </tr>
+          <tr>
+            <td>outTradeNo</td>
+            <td>String</td>
+            <td>否</td>
+            <td>平台订单号</td>
+            <td>FT07092310131942964516392407040</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>🧾 请求示例</h2>
+      <div class="code-block">
+        <pre>{
+  "mchid": "1234567890",
+  "sign": "abcdef1234567890",
+  "mchTradeNo": "TRADE202507070001"
+}</pre>
+      </div>
+      <h2>📤 响应示例</h2>
+      <div class="code-block">
+        <pre>{
+  "data": {
+    "mchid": "CS0001",
+    "mchTradeNo": "1234",
+    "outTradeNo": "FT07092310131942964516392407040",
+    "channelNo": "1001",
+    "amount": "300.00",
+    "status": 1,
+    "statusMsg": "已支付",
+    "payUrl": "http://localhost:8080/service/page/pay?uid=xxx&out_trade_no=FT07092310131942964516392407040",
+    "createTime": "20250709231013",
+    "sign": "4174ff8a12fdd8416779450abbff8402"
+  },
+  "msg": "查询成功",
+  "code": 200,
+  "time": "20250709231014"
+}</pre>
+      </div>
+      <h2>🔒 查询接口说明</h2>
+      <ul>
+        <li style="color: red;">商户订单号、平台订单号可以任意传递一个进行查询。</li>
+      </ul>
+      <h2>📑 返回参数说明</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>描述</th>
+            <th>示例值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>code</td>
+            <td>Int</td>
+            <td>返回码，200为成功</td>
+            <td>200</td>
+          </tr>
+          <tr>
+            <td>msg</td>
+            <td>String</td>
+            <td>返回信息</td>
+            <td>查询成功</td>
+          </tr>
+          <tr>
+            <td>time</td>
+            <td>String</td>
+            <td>响应时间</td>
+            <td>20250709231014</td>
+          </tr>
+          <tr>
+            <td>data.mchid</td>
+            <td>String</td>
+            <td>商户号</td>
+            <td>CS0001</td>
+          </tr>
+          <tr>
+            <td>data.mchTradeNo</td>
+            <td>String</td>
+            <td>商户订单号</td>
+            <td>1234</td>
+          </tr>
+          <tr>
+            <td>data.outTradeNo</td>
+            <td>String</td>
+            <td>平台订单号</td>
+            <td>FT07092310131942964516392407040</td>
+          </tr>
+          <tr>
+            <td>data.channelNo</td>
+            <td>String</td>
+            <td>通道编码</td>
+            <td>1001</td>
+          </tr>
+          <tr>
+            <td>data.amount</td>
+            <td>String</td>
+            <td>订单金额</td>
+            <td>300.00</td>
+          </tr>
+          <tr>
+            <td>data.status</td>
+            <td>Int</td>
+            <td><a href="#order-status">订单状态（点击跳转）</a></td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>data.statusMsg</td>
+            <td>String</td>
+            <td>订单状态描述</td>
+            <td>已支付</td>
+          </tr>
+          <tr>
+            <td>data.payUrl</td>
+            <td>String</td>
+            <td>支付跳转链接</td>
+            <td>http://localhost:8080/service/page/pay?... </td>
+          </tr>
+          <tr>
+            <td>data.createTime</td>
+            <td>String</td>
+            <td>订单创建时间</td>
+            <td>20250709231013</td>
+          </tr>
+          <tr>
+            <td>data.sign</td>
+            <td>String</td>
+            <td>签名</td>
+            <td>4174ff8a12fdd8416779450abbff8402</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 代付接口文档占位 -->
+      <!-- <hr>
+      <h1 id="payout-api">请求付款接口文档</h1>
+      <h2>📌 接口说明</h2>
+      <ul>
+        <li><strong>接口名称：</strong> 请求付款</li>
+        <li><strong>请求方式：</strong> POST</li>
+        <li><strong>接口地址：</strong> <code>/api/payout</code></li>
+        <li><strong>请求类型：</strong> application/json</li>
+      </ul>
+      <h2>📥 请求参数</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>是否必填</th>
+            <th>描述</th>
+            <th>示例值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>mchid</td>
+            <td>String</td>
+            <td>是</td>
+            <td>商户号</td>
+            <td>1234567890</td>
+          </tr>
+          <tr>
+            <td>amount</td>
+            <td>String</td>
+            <td>是</td>
+            <td>付款金额（元）</td>
+            <td>200.00</td>
+          </tr>
+          <tr>
+            <td>accountNo</td>
+            <td>String</td>
+            <td>是</td>
+            <td>收款账户</td>
+            <td>622202xxxxxxxxxxxx</td>
+          </tr>
+          <tr>
+            <td>accountName</td>
+            <td>String</td>
+            <td>是</td>
+            <td>收款人姓名</td>
+            <td>李四</td>
+          </tr>
+          <tr>
+            <td>bankName</td>
+            <td>String</td>
+            <td>是</td>
+            <td>开户行名称</td>
+            <td>中国银行</td>
+          </tr>
+          <tr>
+            <td>remark</td>
+            <td>String</td>
+            <td>否</td>
+            <td>备注</td>
+            <td>代付工资</td>
+          </tr>
+          <tr>
+            <td>sign</td>
+            <td>String</td>
+            <td>是</td>
+            <td>签名</td>
+            <td>abcdef1234567890</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>🧾 请求示例</h2>
+      <div class="code-block">
+        <pre>{
+  "mchid": "1234567890",
+  "amount": "200.00",
+  "accountNo": "622202xxxxxxxxxxxx",
+  "accountName": "李四",
+  "bankName": "中国银行",
+  "remark": "代付工资",
+  "sign": "abcdef1234567890"
+}</pre>
+      </div>
+      <h2>📤 响应示例</h2>
+      <div class="code-block">
+        <pre>{
+  "data": {
+    "mchid": "CS0001",
+    "payoutNo": "PO202507100001",
+    "amount": "200.00",
+    "status": 0,
+    "statusMsg": "处理中",
+    "createTime": 20250710120000,
+    "sign": "bcae1234567890abcdef"
+  },
+  "msg": "请求成功",
+  "code": 200,
+  "time": "20250710120001"
+}</pre>
+      </div>
+      <h2>📑 返回参数说明</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>描述</th>
+            <th>示例值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>code</td>
+            <td>Int</td>
+            <td>返回码，200为成功</td>
+            <td>200</td>
+          </tr>
+          <tr>
+            <td>msg</td>
+            <td>String</td>
+            <td>返回信息</td>
+            <td>请求成功</td>
+          </tr>
+          <tr>
+            <td>time</td>
+            <td>String</td>
+            <td>响应时间</td>
+            <td>20250710120001</td>
+          </tr>
+          <tr>
+            <td>data.mchid</td>
+            <td>String</td>
+            <td>商户号</td>
+            <td>CS0001</td>
+          </tr>
+          <tr>
+            <td>data.payoutNo</td>
+            <td>String</td>
+            <td>代付订单号</td>
+            <td>PO202507100001</td>
+          </tr>
+          <tr>
+            <td>data.amount</td>
+            <td>String</td>
+            <td>付款金额</td>
+            <td>200.00</td>
+          </tr>
+          <tr>
+            <td>data.status</td>
+            <td>Int</td>
+            <td>订单状态（0=处理中，1=成功，2=失败等）</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>data.statusMsg</td>
+            <td>String</td>
+            <td>订单状态描述</td>
+            <td>处理中</td>
+          </tr>
+          <tr>
+            <td>data.createTime</td>
+            <td>Long</td>
+            <td>订单创建时间</td>
+            <td>20250710120000</td>
+          </tr>
+          <tr>
+            <td>data.sign</td>
+            <td>String</td>
+            <td>签名</td>
+            <td>bcae1234567890abcdef</td>
+          </tr>
+        </tbody>
+      </table> -->
+    </div>
+  </div>
+</body>
+
+</html>
