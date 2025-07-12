@@ -136,6 +136,7 @@
           <ul class="sub-menu">
             <li><a href="#pay-api">发起支付</a></li>
             <li><a href="#order-query-api">查询订单</a></li>
+            <li><a href="#order-callback">订单回调</a></li>
           </ul>
         </li>
         <!-- <li>
@@ -628,6 +629,131 @@
             </tr>
           </tbody>
         </table>
+
+        <h1 id="order-callback">订单回调</h1>
+<h2>📌 接口说明</h2>
+<ul>
+  <li><strong>接口名称：</strong> 订单回调通知</li>
+  <li><strong>请求方式：</strong> POST（服务端回调）</li>
+  <li><strong>回调地址：</strong> 商户在下单时传入的 <code>notifyUrl</code></li>
+  <li><strong>请求类型：</strong> application/json</li>
+</ul>
+<h2>📥 回调参数</h2>
+<table>
+  <thead>
+    <tr>
+      <th>参数名</th>
+      <th>类型</th>
+      <th>描述</th>
+      <th>示例值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>mchId</td>
+      <td>String</td>
+      <td>商户ID</td>
+      <td>CS0001</td>
+    </tr>
+    <tr>
+      <td>mchOrderNo</td>
+      <td>String</td>
+      <td>商户订单号</td>
+      <td>TRADE202507070001</td>
+    </tr>
+    <tr>
+      <td>outOrderNo</td>
+      <td>String</td>
+      <td>系统订单号</td>
+      <td>FT07092310131942964516392407040</td>
+    </tr>
+    <tr>
+      <td>status</td>
+      <td>Integer</td>
+      <td><a href="#order-status">订单状态（点击跳转）</a></td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>statusMsg</td>
+      <td>String</td>
+      <td>订单状态描述</td>
+      <td>支付成功</td>
+    </tr>
+    <tr>
+      <td>amount</td>
+      <td>String</td>
+      <td>发起支付的金额</td>
+      <td>100.00</td>
+    </tr>
+    <tr>
+      <td>realAmount</td>
+      <td>String</td>
+      <td>订单实际支付的金额，需取该字段作为实际支付金额</td>
+      <td>100.00</td>
+    </tr>
+    <tr>
+      <td>payTime</td>
+      <td>String</td>
+      <td>支付成功时返回</td>
+      <td>20250709231013</td>
+    </tr>
+    <tr>
+      <td>notifyData</td>
+      <td>String</td>
+      <td>回调透传值</td>
+      <td>attach-info-123456</td>
+    </tr>
+    <tr>
+      <td>errorMsg</td>
+      <td>String</td>
+      <td>订单附属信息</td>
+      <td>无</td>
+    </tr>
+    <tr>
+      <td>timeStamp</td>
+      <td>String</td>
+      <td>请求时间戳</td>
+      <td>20250709231023</td>
+    </tr>
+    <tr>
+      <td>sign</td>
+      <td>String</td>
+      <td>请求参数签名</td>
+      <td>abcdef1234567890</td>
+    </tr>
+  </tbody>
+</table>
+<h2>🧾 回调示例</h2>
+<div class="code-block">
+<pre>{
+  "mchId": "CS0001",
+  "mchOrderNo": "TRADE202507070001",
+  "outOrderNo": "FT07092310131942964516392407040",
+  "status": 1,
+  "statusMsg": "支付成功",
+  "amount": "100.00",
+  "realAmount": "100.00",
+  "payTime": "20250709231013",
+  "notifyData": "attach-info-123456",
+  "errorMsg": "",
+  "timeStamp": "20250709231023",
+  "sign": "abcdef1234567890"
+}
+</pre>
+</div>
+<h2>🧾 回调响应</h2>
+<div class="code-block">
+<pre>
+OK
+</pre>
+</div>
+<h2>🔒 签名说明</h2>
+<ul>
+  <li>回调参数签名方式与请求签名一致，详见 <a href="#sign-msg">sign加密说明</a>。</li>
+  <li>请务必校验 <code>sign</code> 字段，确保回调数据来源可靠。</li>
+  <li>回调返回 <strong style="color: red;">OK</strong> 表示收到响应</li>
+  <li>若没有收到响应，会按管理员配置回调策略，多次请求直到请求上限，或者收到响应</li>
+</ul>
 
         <!-- 代付接口文档占位 -->
         <!-- <hr>
